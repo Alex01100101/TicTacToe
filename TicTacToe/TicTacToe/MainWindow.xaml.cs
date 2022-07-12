@@ -87,23 +87,37 @@ namespace TicTacToe
                     if (_tiles[i, j] == sender)
                     {
                         _tiles[i, j].IsHitTestVisible = false;
-                        _game.Update(new Position(i, j));
+                        _game.Update(new Position(i, j),1);
                     }
                 }
             DrawGrid(_game.GameGrid);
             int gameOver = _game.IsGameOver();
             if (gameOver != 0)
             {
-                for (int i = 0; i < _game.GameGrid.Rows; i++)
-                    for (int j = 0; j < _game.GameGrid.Columns; j++)
-                    {
-                        _tiles[i, j].IsHitTestVisible = false;
-                    }
-                if (gameOver != 3)
-                    this.txtGameOver.Text += gameOver;
-                else
-                    this.txtGameOver.Text = "Tie";
-            }            
+                GameOver(gameOver);
+                return;
+            }
+            Position position=_game.EnemyTurn();
+            _tiles[position.Row, position.Column].IsHitTestVisible = false;
+            DrawGrid(_game.GameGrid);
+            gameOver = _game.IsGameOver();
+            if (gameOver != 0)
+            {
+                GameOver(gameOver);
+            }
+        }
+
+        private void GameOver(int gameOver)
+        {
+            for (int i = 0; i < _game.GameGrid.Rows; i++)
+                for (int j = 0; j < _game.GameGrid.Columns; j++)
+                {
+                    _tiles[i, j].IsHitTestVisible = false;
+                }
+            if (gameOver != 3)
+                this.txtGameOver.Text += gameOver;
+            else
+                this.txtGameOver.Text = "Tie";
         }
 
         public void btnReset_Click(object sender, RoutedEventArgs e)

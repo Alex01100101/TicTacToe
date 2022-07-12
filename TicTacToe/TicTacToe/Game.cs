@@ -22,16 +22,6 @@ namespace TicTacToe
                 OnPropertyChanged(nameof(GameOver));
             }
         }
-        private int _player;
-
-        public int Player
-        {
-            get => _player;
-            private set
-            {
-                _player = value;
-            }
-        }
 
         public Game()
         {
@@ -41,30 +31,13 @@ namespace TicTacToe
         public void Reset()
         {
             GameGrid = new GameGrid(3, 3);
-            _player = 1;
             GameOver = false;
         }
 
         public int IsGameOver()
         {
-            int player;
             GameOver = true;
-            for (int i = 0; i < 3; i++)
-            {
-                player = GameGrid.IsRowWin(i);
-                if (player != 0)
-                    return player;
-            }
-            for (int i = 0; i < 3; i++)
-            {
-                player = GameGrid.IsColumnWin(i);
-                if (player != 0)
-                    return player;
-            }
-            player = GameGrid.IsFirstDiagonalWin();
-            if (player != 0)
-                return player;
-            player = GameGrid.IsSecondDiagonalWin();
+            int player = GameGrid.IsWin();
             if (player != 0)
                 return player;
             if (GameGrid.IsGridFull())
@@ -73,13 +46,16 @@ namespace TicTacToe
             return 0;
         }
 
-        public void Update(Position pressedPosition)
+        public Position EnemyTurn()
         {
-            GameGrid[pressedPosition.Row, pressedPosition.Column] = _player;
-            if (_player == 1)
-                _player = 2;
-            else
-                _player = 1;
+            Position bestPosition = GameGrid.GetBestMove();
+            Update(bestPosition,2);
+            return bestPosition;
+        }
+
+        public void Update(Position pressedPosition,int player)
+        {
+            GameGrid[pressedPosition.Row, pressedPosition.Column] = player ;
         }
 
         #region INotifyPropertyChanged

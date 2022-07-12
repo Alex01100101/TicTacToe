@@ -9,7 +9,7 @@ namespace TicTacToe
 {
     public class GameGrid
     {
-        private readonly int[,] _grid;
+        private int[,] _grid;
 
         public int Rows { get; }
 
@@ -66,6 +66,31 @@ namespace TicTacToe
                     return 0;
             return player;
         }
+
+        public int IsWin()
+        {
+            int player;
+            for (int i = 0; i < 3; i++)
+            {
+                player = IsRowWin(i);
+                if (player != 0)
+                    return player;
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                player =IsColumnWin(i);
+                if (player != 0)
+                    return player;
+            }
+            player = IsFirstDiagonalWin();
+            if (player != 0)
+                return player;
+            player =IsSecondDiagonalWin();
+            if (player != 0)
+                return player;
+            return 0;
+        }
+
         public bool IsGridFull()
         {
             for (int i = 0; i < Rows; i++)
@@ -73,6 +98,64 @@ namespace TicTacToe
                     if (_grid[i, j] == 0)
                         return false;
             return true;
+        }
+
+        public Position GetBestMove()
+        {
+            Position bestPosition = new Position(1, 1);
+            int score = -200;
+            for (int i = 0; i < Rows; i++)
+                for (int j = 0; j < Columns; j++)
+                    if (_grid[i, j] == 0)
+                    {
+                        int temp = GetScore(new Position(i, j),2);
+                        if(temp>score)
+                        {
+                            score = temp;
+                            bestPosition = new Position(i, j);
+                        }
+                    }
+            return bestPosition;
+        }
+
+        public int GetScore(Position position, int player)
+        {
+            int score=0;
+            _grid[position.Row, position.Column] = player;
+            if (IsWin() == 2)
+            {
+                _grid[position.Row, position.Column] = 0;
+                return 100;
+            }
+            if (IsWin() == 1)
+            {
+                _grid[position.Row, position.Column] = 0;
+                return -100;
+            }
+            if (IsGridFull())
+            {
+                _grid[position.Row, position.Column] = 0;
+                return 0;
+            }
+            for (int i = 0; i < Rows; i++)
+                for (int j = 0; j < Columns; j++)
+                    if (_grid[i, j] == 0)
+                    {
+                        int temp;
+                        if (player==1)
+                            temp = GetScore(new Position(i, j),2);
+                        else
+                            temp = GetScore(new Position(i, j),1);
+                        if (temp >0)
+                        {
+                            score += 10;
+                        }
+                        else if (temp <0)
+                            score -= 10;
+                        else score += temp;
+                    }
+            _grid[position.Row, position.Column] = 0;
+            return score;
         }
     }
 }
