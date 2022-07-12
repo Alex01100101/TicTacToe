@@ -66,5 +66,13 @@ namespace TicTacToe
                     return 0;
             return player;
         }
+        public bool IsGridFull()
+        {
+            for (int i = 0; i < Rows; i++)
+                for (int j = 0; j < Columns; j++)
+                    if (_grid[i, j] == 0)
+                        return false;
+            return true;
+        }
     }
 }

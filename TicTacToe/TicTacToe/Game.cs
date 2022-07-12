@@ -67,6 +67,8 @@ namespace TicTacToe
             player = GameGrid.IsSecondDiagonalWin();
             if (player != 0)
                 return player;
+            if (GameGrid.IsGridFull())
+                return 3;
             GameOver = false;
             return 0;
         }

@@ -99,7 +99,10 @@ namespace TicTacToe
                     {
                         _tiles[i, j].IsHitTestVisible = false;
                     }
-                this.txtGameOver.Text += gameOver;
+                if (gameOver != 3)
+                    this.txtGameOver.Text += gameOver;
+                else
+                    this.txtGameOver.Text = "Tie";
             }            
         }
 
