@@ -103,7 +103,7 @@ namespace TicTacToe
         public Position GetBestMove()
         {
             Position bestPosition = new Position(1, 1);
-            int score = -200;
+            int score = -10000;
             for (int i = 0; i < Rows; i++)
                 for (int j = 0; j < Columns; j++)
                     if (_grid[i, j] == 0)
@@ -118,7 +118,7 @@ namespace TicTacToe
             return bestPosition;
         }
 
-        public int GetScore(Position position, int player)
+        private int GetScore(Position position, int player)
         {
             int score=0;
             _grid[position.Row, position.Column] = player;
@@ -146,12 +146,12 @@ namespace TicTacToe
                             temp = GetScore(new Position(i, j),2);
                         else
                             temp = GetScore(new Position(i, j),1);
-                        if (temp >0)
+                        if (temp ==100)
                         {
                             score += 10;
                         }
-                        else if (temp <0)
-                            score -= 10;
+                        else if (temp == -100)
+                            score -= 20;
                         else score += temp;
                     }
             _grid[position.Row, position.Column] = 0;
