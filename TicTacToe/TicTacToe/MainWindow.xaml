@@ -5,8 +5,34 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TicTacToe"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="1000" Width="800">
+    <Window.Resources>
+        <local:VisibilityConverter x:Key="VisibilityConverter" />
+    </Window.Resources>
+    <Grid ShowGridLines="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="800" />
+        </Grid.RowDefinitions>
 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="800"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Row="0" Grid.Column="0" Margin="10" HorizontalAlignment="Center">
+            <TextBlock Text="Winner:" Margin="10" HorizontalAlignment="Center" x:Name="txtGameOver"
+                       Foreground="DarkRed" FontSize="28" FontWeight="Bold"
+                       Visibility="{Binding GameOver, Converter={StaticResource VisibilityConverter}}">
+
+            </TextBlock>
+            <Button x:Name="btnReset" Content="Reset" Padding="4" Width="100" Click="btnReset_Click"
+                    Visibility="{Binding GameOver, Converter={StaticResource VisibilityConverter}}"/>
+        </StackPanel>
+
+        <Grid Grid.Row="1"
+              Grid.Column="0"
+              x:Name="visualGrid"
+              Margin="0,0,0,20">
+        </Grid>
     </Grid>
 </Window>
