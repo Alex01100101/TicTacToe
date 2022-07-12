@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -103,7 +102,7 @@ namespace TicTacToe
         public Position GetBestMove()
         {
             Position bestPosition = new Position(1, 1);
-            int score = -10000;
+            int score = -100000;
             for (int i = 0; i < Rows; i++)
                 for (int j = 0; j < Columns; j++)
                     if (_grid[i, j] == 0)
@@ -125,12 +124,12 @@ namespace TicTacToe
             if (IsWin() == 2)
             {
                 _grid[position.Row, position.Column] = 0;
-                return 100;
+                return 10;
             }
             if (IsWin() == 1)
             {
                 _grid[position.Row, position.Column] = 0;
-                return -100;
+                return -20;
             }
             if (IsGridFull())
             {
@@ -146,13 +145,7 @@ namespace TicTacToe
                             temp = GetScore(new Position(i, j),2);
                         else
                             temp = GetScore(new Position(i, j),1);
-                        if (temp ==100)
-                        {
-                            score += 10;
-                        }
-                        else if (temp == -100)
-                            score -= 20;
-                        else score += temp;
+                        score += temp;
                     }
             _grid[position.Row, position.Column] = 0;
             return score;

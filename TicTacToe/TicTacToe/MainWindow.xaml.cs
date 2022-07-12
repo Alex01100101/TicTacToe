@@ -17,12 +17,6 @@ namespace TicTacToe
 {
     public partial class MainWindow : Window
     {
-        private readonly Dictionary<int, Brush> _tileColors = new Dictionary<int, Brush>
-        {
-            { 0, Brushes.Gray },
-            { 1, Brushes.Black },
-            { 2, Brushes.White },
-        };
 
         private Game _game;
 
@@ -42,9 +36,10 @@ namespace TicTacToe
             {
                 for (int col = 0; col < _tiles.GetLength(1); col++)
                 {
-                    int id = grid[row, col];
-                    Brush color = _tileColors[id];
-                    _tiles[row, col].Background = color;
+                    if (_game.GameGrid[row, col] == 1)
+                        _tiles[row, col].Content  = "X";
+                    if (_game.GameGrid[row, col] == 2)
+                        _tiles[row, col].Content = "0";
                 }
             }
         }
@@ -74,6 +69,7 @@ namespace TicTacToe
                     tile.Click += GameButton_Click;
                     tile.BorderBrush = Brushes.Black;
                     tile.BorderThickness = new Thickness(1);
+                    tile.FontSize = 60;
                     this.visualGrid.Children.Add(tile);
                     _tiles[row, col] = tile;
                 }
@@ -115,7 +111,12 @@ namespace TicTacToe
                     _tiles[i, j].IsHitTestVisible = false;
                 }
             if (gameOver != 3)
-                this.txtGameOver.Text += gameOver;
+            {
+                if(gameOver==1)
+                    this.txtGameOver.Text += "X";
+                else
+                    this.txtGameOver.Text += "0";
+            }
             else
                 this.txtGameOver.Text = "Tie";
         }
@@ -127,6 +128,7 @@ namespace TicTacToe
                 for (int j = 0; j < _game.GameGrid.Columns; j++)
                 {
                     _tiles[i, j].IsHitTestVisible = true;
+                    _tiles[i, j].Content = "";
                 }
             this.txtGameOver.Text = "Winner:";
             DrawGrid(_game.GameGrid);
